@@ -39,14 +39,16 @@
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: 40;
-  transform: translateX(-100%); /* hidden by default */
-  transition: transform 0.25s ease;
+  z-index: 90;                      /* ↑ para sobrepor hero; abaixo do .open */
+  transform: translateX(-100%);     /* hidden by default (off-canvas) */
+  transition: transform 0.25s ease, box-shadow .25s ease, z-index .25s ease;
 }
 
 /* show sidebar when .open is toggled */
 .chat-sidebar.open {
   transform: translateX(0);
+  z-index: 160;                     /* sobrepõe input central (z=80) */
+  box-shadow: 0 24px 60px rgba(0,0,0,.28);
 }
 
 .chat-sidebar .brand{
@@ -64,10 +66,8 @@
   position: relative; /* required for absolute positioning of centered input */
 }
 
-/* When sidebar is opened, shift main area to make room */
-.chat-sidebar.open ~ .chat-main{
-  margin-left:260px;
-}
+/* When sidebar is opened, shift main area to make room (somente em telas largas) */
+.chat-sidebar.open ~ .chat-main{ margin-left:260px; }
 
 /* Sidebar controls */
 .sidebar-controls{display:flex;flex-direction:column;gap:.5rem}
@@ -110,28 +110,19 @@
 }
 
 /* Quando não há mensagens, centraliza o conteúdo verticalmente */
-.chat-column.empty {
-  justify-content: center;
-  align-items: center;
-}
+.chat-column.empty { justify-content: center; align-items: center; }
 
-/* Quando o chat está vazio, centraliza verticalmente */
-.chat-column.empty {
-  justify-content: center;
-}
-
-.message-row{display:flex;gap:1.25rem;align-items:flex-end}
+/* Mensagens */
+.message-row{display:flex;gap:1.25rem;align-items:flex-end; width: 100%;}
 .message-row.ai{align-items:flex-start}
 .message-bubble{max-width:75%;padding:var(--bubble-padding-vertical) var(--bubble-padding-horizontal);border-radius:var(--bubble-radius);background:#fff;color:#111;border:1px solid rgba(0,0,0,0.04);font-size:1rem}
 .message-bubble.ai{background:#E8F3F0;color:var(--ia-green);border:none;border-top-left-radius:6px}
 .message-bubble.user{background:var(--ia-green);color:#fff;border-bottom-right-radius:6px;margin-left:auto}
-
-/* Ensure each message row spans full width so right-justify works */
-.message-row { width: 100%; }
-
-/* User messages: place bubble at right corner and center its text */
 .message-row.user { justify-content: flex-end; }
 .message-bubble.user { margin-left: auto; margin-right: 0; text-align: center; }
+
+.avatar{ width:var(--avatar-size); height:var(--avatar-size); border-radius:50%; object-fit:cover; }
+.avatar-container{ display:flex; align-items:flex-end; }
 
 /* === INPUT: somente a pílula, sem base retangular === */
 .input-bar {
@@ -143,7 +134,7 @@
   padding: 0 !important;
   background: transparent !important;   /* remove a base */
   border: none !important;              /* remove a borda da base */
-  z-index: 60;
+  z-index: 80;
   display: flex;
   justify-content: center;
   pointer-events: none;                  /* só a pílula é clicável */
@@ -167,21 +158,21 @@
   flex:1;
   padding:var(--input-padding-vertical) var(--input-padding-horizontal);
   border-radius:999px;
-  border:1px solid rgba(0,0,0,0.06);
+  border:none;
   outline:none;
   font-size:1rem;
-  border:none;                           /* borda do input fica invisível na pílula */
   background: transparent;
 }
 
 /* Botões */
-.btn-ghost{background:transparent;border:none;color:var(--ia-green);padding:.5rem 1rem;border-radius:.5rem}
+.btn-ghost{background:transparent;border:none;color:var(--ia-green);padding:.5rem 1rem;border-radius:.5rem;cursor:pointer}
 .btn-primary {
   background: var(--ia-green);
   color: #fff;
   padding: .6rem 1rem;
   border-radius: 999px;
   border: none;
+  cursor:pointer;
 }
 
 /* Quando compondo a primeira mensagem, centraliza a pílula no viewport */
@@ -211,22 +202,19 @@
   border: 1px solid rgba(0,0,0,0.08);
 }
 
-/* Hide all other UI when composing in center */
+/* Esconde SOMENTE o conteúdo do main no compose-center (mantém sidebar para o hambúrguer) */
 .chat-fullpage.compose-center .chat-area,
-.chat-fullpage.compose-center .chat-column,
-.chat-fullpage.compose-center .brand,
-.chat-fullpage.compose-center .chat-history,
-.chat-fullpage.compose-center .sidebar-footer {
+.chat-fullpage.compose-center .chat-column {
   display: none !important;
 }
-.chat-fullpage.compose-center aside.chat-sidebar { display: none !important; }
+
+/* NÃO esconda mais a sidebar nem seus elementos no compose-center */
+/* (removidas regras que escondiam .brand, .chat-history, .sidebar-footer e aside.chat-sidebar) */
 
 /* smooth transition when moving input */
-.input-bar, .chat-main.compose-center .input-row {
-  transition: all 250ms ease;
-}
+.input-bar, .chat-main.compose-center .input-row { transition: all 250ms ease; }
 
-/* Floating hamburger button */
+/* Botão hamburger flutuante */
 .hamburger-btn {
   position: fixed;
   top: 20px;
@@ -238,7 +226,7 @@
   border: 1px solid rgba(0,0,0,0.1);
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
   cursor: pointer;
-  z-index: 50;
+  z-index: 200;                 /* ↑ sempre clicável acima do hero/input */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -247,30 +235,7 @@
 .hamburger-btn:hover { background: #f8f8f8; }
 .hamburger-btn svg { color: var(--ia-green); }
 
-/* responsive */
-@media (max-width: 900px){
-  .chat-sidebar{transform:translateX(-100%);position:fixed;z-index:50}
-  .chat-sidebar.open{transform:translateX(0)}
-  .chat-main{margin-left:0}
-}
-
-/* Floating hamburger button (shown on all sizes but primarily used on small screens) */
-.hamburger-btn{
-  position:fixed;
-  left:20px;
-  top:20px;
-  width:var(--hamburger-size);
-  height:var(--hamburger-size);
-  border-radius:12px;
-  background:#fff;
-  border:1px solid rgba(0,0,0,0.06);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 6px 22px rgba(0,0,0,0.12);
-  z-index:60;
-}
-.hamburger-btn svg{color:var(--ia-green);}
-
-/* --- Floating chat (user request) --- */
+/* --- Floating chat (widget) --- */
 .chat-fullpage.chat-floating,
 .chat-main.chat-floating {
   position: fixed;
@@ -289,9 +254,7 @@
 /* Ensure internal areas fill the floating container */
 .chat-fullpage.chat-floating .chat-main,
 .chat-main.chat-floating .chat-area,
-.chat-fullpage.chat-floating .chat-area {
-  height: 100%;
-}
+.chat-fullpage.chat-floating .chat-area { height: 100%; }
 
 .chat-fullpage.chat-floating .chat-column,
 .chat-main.chat-floating .chat-column {
@@ -308,14 +271,19 @@
   bottom: 12px;
   left: 0;
   right: 0;
-  transform: none;                         /* sobrescreve o translateX do estado padrão */
+  transform: none;                         
   z-index: 125;
   padding: 0 !important;
-  background: transparent !important;      /* garante que não apareça base */
+  background: transparent !important;      
   border: none !important;
 }
 
-/* Small-screen tweak: use nearly-full width on very small viewports to avoid overflow */
+/* Responsive */
+@media (max-width: 900px){
+  .chat-sidebar{transform:translateX(-100%);position:fixed;z-index:90}
+  .chat-sidebar.open{transform:translateX(0);z-index:160}
+  .chat-main{margin-left:0}
+}
 @media (max-width: 480px) {
   .chat-fullpage.chat-floating,
   .chat-main.chat-floating {
@@ -326,3 +294,34 @@
     bottom: 12px;
   }
 }
+
+/* === HERO CENTRAL (boas-vindas) === */
+.welcome-hero{
+  position: fixed;
+  left: 50%;
+  top: calc(50% - 110px); /* posiciona acima da pílula central */
+  transform: translateX(-50%);
+  display: none;                   /* aparece só no compose-center */
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  text-align: center;
+  z-index: 70;                     /* abaixo da input-bar (80) */
+  padding: 0 1rem;
+}
+.welcome-hero .hero-title{
+  font-size: clamp(1.4rem, 2.6vw + 1rem, 2.4rem);
+  font-weight: 700;
+  color: #111;
+  letter-spacing: .1px;
+}
+.welcome-hero .hero-subtitle{
+  font-size: clamp(.95rem, .4vw + .85rem, 1.1rem);
+  color: var(--muted);
+}
+
+/* Mostra o hero somente no estado de composição central */
+.chat-main.compose-center .welcome-hero,
+.chat-fullpage.compose-center .welcome-hero{ display: flex; }
+
+.welcome-hero.hidden{ display: none !important; }
