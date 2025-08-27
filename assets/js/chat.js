@@ -1,272 +1,200 @@
-// ==============================
-// Estado da aplicação
-// ==============================
+// ========= Estado =========
 const elements = {};
-const state = {
-  isTyping: false,
-  messageHistory: []
-};
+const state = { isTyping: false, messageHistory: [] };
+const config = { typingDelay: 50, aiResponseDelay: 1000, aiName: 'EssentIA', userName: '' };
 
-const config = {
-  typingDelay: 50,
-  aiResponseDelay: 1000,
-  aiName: 'EssentIA',
-  userName: '' // preenchido na initialize()
-};
-
-// Histórico de exemplo (mock)
+// Mock de histórico
 const sampleHistory = [
   { title: 'Sugestões de perfumes cítricos', subtitle: 'Ontem' },
   { title: 'Fixação x concentração', subtitle: 'Semana passada' },
   { title: 'Perfume para noite fria', subtitle: 'Há 2 semanas' }
 ];
 
-// ==============================
-// Inicialização quando o DOM estiver pronto
-// ==============================
-function initialize() {
-  // Mapear elementos do DOM
-  elements.chatMessages = document.getElementById('chat-column');
-  elements.messageInput = document.getElementById('message-input');
-  elements.sendBtn = document.getElementById('send-btn');
-  elements.newChatBtn = document.getElementById('new-chat-btn');
-  elements.sidebar = document.querySelector('.chat-sidebar');
-  elements.chatMain = document.querySelector('.chat-main');
-  elements.chatFullpage = document.querySelector('.chat-fullpage');
-  elements.hamburgerBtn = document.getElementById('hamburger-btn');
-  elements.historyList = document.getElementById('history-list');
-  elements.historySearch = document.getElementById('history-search');
-  elements.welcomeHero = document.getElementById('welcome-hero');
-  elements.heroTitle   = document.getElementById('hero-title');
+// ========= Init =========
+document.addEventListener('DOMContentLoaded', initialize);
 
-  // Nome do usuário (ajuste a origem como preferir)
-  config.userName = getUserName() || 'visitante';
+function initialize() {
+  // Map
+  elements.chatMessages  = document.getElementById('chat-column');
+  elements.messageInput  = document.getElementById('message-input');
+  elements.sendBtn       = document.getElementById('send-btn');
+  elements.newChatBtn    = document.getElementById('new-chat-btn');
+  elements.sidebar       = document.querySelector('.chat-sidebar');
+  elements.chatMain      = document.querySelector('.chat-main');
+  elements.chatFullpage  = document.querySelector('.chat-fullpage');
+  elements.hamburgerBtn  = document.getElementById('hamburger-btn');
+  elements.historyList   = document.getElementById('history-list');
+  elements.historySearch = document.getElementById('history-search');
+  elements.welcomeHero   = document.getElementById('welcome-hero');
+  elements.heroTitle     = document.getElementById('hero-title');
+
+  // Nome do usuário (se tiver salvo)
+  config.userName = getUserName() || 'Usuário';
+  updateWelcomeHeroText();
+
+  // Medir altura real da pílula e salvar na CSS var (garante transição correta)
+  updateInputHeightVar();
+  window.addEventListener('resize', updateInputHeightVar);
 
   // Listeners
   setupHamburger();
   setupChat();
   setupHistory();
-
-  // Iniciar chat
   renderHistory();
-  startNewChat();
 
-  // Garante estado compose-center na primeira tela
-  elements.chatMain?.classList.add('compose-center');
-  elements.chatFullpage?.classList.add('compose-center');
-
-  // Atualiza o texto do hero
-  updateWelcomeHero();
+  // Tela inicial sempre ao entrar/atualizar
+  forceWelcomeOnLoad();
+  window.addEventListener('pageshow', forceWelcomeOnLoad); // bfcache
 }
 
-// ==============================
-// Utilidades
-// ==============================
-function getUserName(){
-  // tentar pegar da sidebar
-  const fromSidebar = document.querySelector('.sidebar-footer .name');
-  if (fromSidebar && fromSidebar.textContent.trim()) return fromSidebar.textContent.trim();
-
-  // ou LocalStorage
+// ===== Utils =====
+function getUserName() {
+  const n = document.querySelector('.sidebar-footer .name');
+  if (n && n.textContent.trim()) return n.textContent.trim();
   try { return localStorage.getItem('userName') || ''; } catch { return ''; }
 }
 
-function updateWelcomeHero(){
-  if (!elements.heroTitle) return;
-  const nome = config.userName || 'visitante';
-  elements.heroTitle.textContent = `Olá, ${nome}! Qual sua dúvida de perfume?`;
+function updateWelcomeHeroText() {
+  if (elements.heroTitle) {
+    const nome = config.userName || 'Usuário';
+    elements.heroTitle.textContent = `Olá, ${nome}! Qual sua dúvida de perfume?`;
+  }
   if (elements.messageInput) {
     elements.messageInput.placeholder = 'Pergunte sobre fragrâncias, notas, fixação, ocasiões...';
   }
 }
 
-// ==============================
-// Configuração do botão hamburger
-// ==============================
+/** Mede a altura da pílula e injeta em --input-height (para animar top com precisão) */
+function updateInputHeightVar(){
+  const row = document.querySelector('.input-row');
+  if (!row) return;
+  const h = Math.round(row.getBoundingClientRect().height);
+  document.documentElement.style.setProperty('--input-height', `${h}px`);
+}
+
+/** Força o estado "tela inicial": hero visível + pílula central (via compose-center) */
+function forceWelcomeOnLoad() {
+  // Fecha sidebar e reseta botão
+  elements.sidebar?.classList.remove('open');
+  document.body.classList.remove('sidebar-open');
+  elements.hamburgerBtn?.setAttribute('aria-expanded', 'false');
+
+  // Limpa mensagens e ativa classes
+  elements.chatMessages && (elements.chatMessages.innerHTML = '');
+  elements.chatMessages?.classList.add('empty');
+  elements.chatMain?.classList.add('compose-center');
+  elements.chatFullpage?.classList.add('compose-center');
+
+  // Mostra hero
+  elements.welcomeHero?.classList.remove('hidden');
+  updateWelcomeHeroText();
+
+  // Foco no input
+  setTimeout(() => elements.messageInput?.focus(), 0);
+}
+
+// ===== Hamburger =====
 function setupHamburger() {
-  if (!elements.hamburgerBtn || !elements.sidebar) return;
+  const btn = elements.hamburgerBtn, sb = elements.sidebar;
+  if (!btn || !sb) return;
 
-  // Click no hamburger
-  elements.hamburgerBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    elements.sidebar.classList.toggle('open');
-    const isOpen = elements.sidebar.classList.contains('open');
-    elements.hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+  btn.addEventListener('click', (e) => {
+    e.preventDefault(); e.stopPropagation();
+    sb.classList.toggle('open');
+    const isOpen = sb.classList.contains('open');
+    btn.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('sidebar-open', isOpen);
   });
 
-  // Fechar ao clicar fora (em telas pequenas)
   document.addEventListener('click', (e) => {
-    const clickedOutside = !elements.sidebar.contains(e.target) &&
-                           !elements.hamburgerBtn.contains(e.target);
-
-    if (elements.sidebar.classList.contains('open') && clickedOutside) {
-      elements.sidebar.classList.remove('open');
-      elements.hamburgerBtn.setAttribute('aria-expanded', 'false');
+    const out = !sb.contains(e.target) && !btn.contains(e.target);
+    if (sb.classList.contains('open') && out) {
+      sb.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('sidebar-open');
     }
   });
 }
 
-// ==============================
-// Configuração do chat
-// ==============================
+// ===== Chat =====
 function setupChat() {
   elements.sendBtn?.addEventListener('click', handleSendMessage);
 
   elements.messageInput?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); }
   });
 
-  elements.newChatBtn?.addEventListener('click', startNewChat);
+  // "+ Nova conversa" volta para o hero (animando de baixo → meio)
+  elements.newChatBtn?.addEventListener('click', () => forceWelcomeOnLoad());
 }
 
-// ==============================
-// Envio de mensagem
-// ==============================
 function handleSendMessage() {
   if (!elements.messageInput || state.isTyping) return;
-
   const text = elements.messageInput.value.trim();
   if (!text) return;
 
-  // Remove a classe empty quando enviar mensagem
-  elements.chatMessages?.classList.remove('empty');
-
-  // Ao enviar a primeira mensagem, sai do modo "compose-center"
+  // Sai do modo tela inicial (meio → baixo), anima porque só removemos a classe
   elements.chatMain?.classList.remove('compose-center');
   elements.chatFullpage?.classList.remove('compose-center');
-
-  // Esconde o hero
   elements.welcomeHero?.classList.add('hidden');
 
-  // Adicionar mensagem do usuário
   addMessage('Você', text);
   elements.messageInput.value = '';
 
-  // (Opcional) Simular resposta da IA
+  // Simula resposta
   setTimeout(() => {
     addMessage(config.aiName, 'Entendi! Me conte mais sobre o que você busca: notas, ocasião de uso ou fixação?', true);
   }, config.aiResponseDelay);
 }
 
-// ==============================
-// Animação de digitação
-// ==============================
-function typeWriter(text, element) {
-  let i = 0;
-  element.textContent = '';
-  state.isTyping = true;
-
-  (function type() {
-    if (i < text.length) {
-      element.textContent += text.charAt(i);
-      i++;
-      setTimeout(type, config.typingDelay);
-    } else {
-      state.isTyping = false;
-      element.parentElement.classList.remove('typing');
-    }
-  })();
+// ===== Mensagens =====
+function typeWriter(text, el) {
+  let i = 0; el.textContent = ''; state.isTyping = true;
+  (function t(){ if(i<text.length){ el.textContent += text.charAt(i++); setTimeout(t, config.typingDelay); }
+  else{ state.isTyping = false; el.parentElement.classList.remove('typing'); } })();
 }
 
-// ==============================
-// Criar elemento de mensagem
-// ==============================
-function createMessageElement(sender, isAI) {
-  const messageWrapper = document.createElement('div');
-  messageWrapper.className = `message-wrapper ${isAI ? 'ai-message' : 'user-message'}`;
-
-  const logoFallback = 'assets/img/logo.png';
-
-  if (isAI) {
-    messageWrapper.innerHTML = `
-      <div class="message-row ai">
-        <div class="avatar-container">
-          <img class="avatar" src="${logoFallback}" alt="AI" />
-        </div>
-        <div class="message-bubble ai typing"><p></p></div>
-      </div>`;
-  } else {
-    messageWrapper.innerHTML = `
-      <div class="message-row user">
-        <div class="message-bubble user"><p></p></div>
-        <div class="avatar-container">
-          <img class="avatar" src="${logoFallback}" alt="Você" />
-        </div>
-      </div>`;
-  }
-
-  return messageWrapper;
+function createMessageElement(isAI) {
+  const wrap = document.createElement('div');
+  wrap.className = `message-wrapper ${isAI ? 'ai-message' : 'user-message'}`;
+  const logo = 'assets/img/logo.png';
+  wrap.innerHTML = isAI
+    ? `<div class="message-row ai"><div class="avatar-container"><img class="avatar" src="${logo}" alt="AI"/></div><div class="message-bubble ai typing"><p></p></div></div>`
+    : `<div class="message-row user"><div class="message-bubble user"><p></p></div><div class="avatar-container"><img class="avatar" src="${logo}" alt="Você"/></div></div>`;
+  return wrap;
 }
 
-// ==============================
-// Adicionar mensagem ao chat
-// ==============================
-function addMessage(sender, text, isAI = false) {
+function addMessage(sender, text, isAI=false) {
   if (!elements.chatMessages) return;
-
   elements.chatMessages.classList.remove('empty');
 
-  const messageWrapper = createMessageElement(sender, isAI);
-  const messageBubble = messageWrapper.querySelector('.message-bubble p');
+  const wrap = createMessageElement(isAI);
+  const p = wrap.querySelector('.message-bubble p');
+  elements.chatMessages.appendChild(wrap);
 
-  elements.chatMessages.appendChild(messageWrapper);
-
-  if (isAI) {
-    typeWriter(text, messageBubble);
-  } else {
-    messageBubble.textContent = text;
-  }
-
+  if (isAI) typeWriter(text, p); else p.textContent = text;
   elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
   state.messageHistory.push({ sender, text, isAI });
 }
 
-// ==============================
-// Iniciar novo chat: centraliza o input até a primeira mensagem
-// ==============================
-function startNewChat() {
-  if (!elements.chatMessages) return;
+// ===== Histórico (mock) =====
+function setupHistory(){ /* opcional: busca etc. */ }
 
-  elements.chatMessages.innerHTML = '';
-  elements.chatMessages.classList.add('empty');
-
-  elements.chatMain?.classList.add('compose-center');
-  elements.chatFullpage?.classList.add('compose-center');
-
-  elements.welcomeHero?.classList.remove('hidden');
-  updateWelcomeHero();
-
-  elements.messageInput?.focus();
-}
-
-// ==============================
-// Histórico (mock)
-// ==============================
 function renderHistory(list = sampleHistory) {
   if (!elements.historyList) return;
-
   elements.historyList.innerHTML = '';
   list.forEach(item => {
     const li = document.createElement('li');
     li.className = 'history-item';
     li.innerHTML = `
       <img src="assets/img/logo.png" alt="icon" />
-      <div class="meta">
-        <div class="title">${item.title}</div>
-        <div class="subtitle">${item.subtitle}</div>
-      </div>`;
-
+      <div class="meta"><div class="title">${item.title}</div><div class="subtitle">${item.subtitle}</div></div>`;
     li.addEventListener('click', () => {
       loadChat(item);
-      elements.sidebar.classList.remove('open');
-      elements.hamburgerBtn.setAttribute('aria-expanded', 'false');
+      elements.sidebar?.classList.remove('open');
+      elements.hamburgerBtn?.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('sidebar-open');
     });
-
     elements.historyList.appendChild(li);
   });
 }
@@ -281,18 +209,3 @@ function loadChat(chat) {
   elements.chatFullpage?.classList.remove('compose-center');
   elements.welcomeHero?.classList.add('hidden');
 }
-
-function setupHistory() {
-  elements.historySearch?.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase().trim();
-    const filtered = sampleHistory.filter(item =>
-      item.title.toLowerCase().includes(query)
-    );
-    renderHistory(filtered);
-  });
-}
-
-// ==============================
-// Boot
-// ==============================
-document.addEventListener('DOMContentLoaded', initialize);
