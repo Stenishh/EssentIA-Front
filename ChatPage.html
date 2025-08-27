@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- CSS separado -->
+  <!-- CSS -->
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/chat.css" />
 </head>
@@ -52,6 +52,12 @@
         </div>
       </section>
 
+      <!-- HERO DE BOAS-VINDAS CENTRALIZADO -->
+      <div class="welcome-hero" id="welcome-hero" aria-live="polite">
+        <h1 class="hero-title" id="hero-title">Olá, visitante! Qual sua dúvida de perfume?</h1>
+      </div>
+
+      <!-- Pílula de input -->
       <div class="input-bar">
         <div class="input-row">
           <input id="message-input" type="text" placeholder="Digite sua mensagem..." />
@@ -61,11 +67,11 @@
     </main>
   </div>
 
-  <!-- Hamburger toggle (fixed position) -->
-  <button id="hamburger-btn" class="hamburger-btn" aria-label="Abrir menu">
+  <!-- Botão hamburger (flutuante) -->
+  <button id="hamburger-btn" class="hamburger-btn" aria-label="Abrir menu" aria-expanded="false">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
   </button>
-  
+
   <!-- JavaScript principal -->
   <script src="assets/js/chat.js"></script>
 </body>
