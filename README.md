@@ -9,7 +9,7 @@
 |-------|------------|
 | **📅 Data de Criação** | 27/08/2025 |   
 | **👥 Membros da Equipe** | Antono Augusto e Fernando Puebla |
-| **📄 Versão** | [v1.0] |
+| **📄 Versão** | v1.0 |
 
 ---
 
@@ -21,7 +21,7 @@
 O Front-end entrega a experiência do usuário: transforma requisitos em páginas e componentes interativos, integra-se às APIs para enviar dados, valida entradas e trata erros, orquestra navegação e estados (carregando/sucesso/erro), aplica o Design System (cores, tipografia, tokens) e garante responsividade, acessibilidade e performance.
 
 ### 🎪 Contexto no Projeto
- Desenvolvimento da interface do usuário, incluindo a página inicial (com login e informações sobre o agente), além da página principal, que contém o chat]
+ Desenvolvimento da interface do usuário, incluindo a página inicial (com login e informações sobre o agente), além da página principal, que contém o chat
 
 ---
 
@@ -108,15 +108,18 @@ frontend/
 **Como funciona:** Página inicial com área de autenticação (login/CTA para cadastro) e apresentação do agente: o que faz, como funciona, planos, limites e políticas (Privacidade/Termos). Traz CTAs claros e direciona o usuário autenticado para o chat.
 
 ### 🎯 Funcionalidade 2: Login/cadastro
-**Como funciona:** luxo completo de autenticação. Para novos usuários, cadastro com verificação de e-mail e um mini onboarding para captar preferências (gostos, objetivos) que personalizam a experiência no chat.
+**Como funciona:** Fluxo completo de autenticação. Novos usuários realizam cadastro informando nome, idade, gênero (opcional), e-mail e senha.
 
-### 🎯 Funcionalidade 3: Recuperar senha
+### 🎯 Funcionalidade 3: Perguntas de preferencia
+**Como funciona:** Após o primeiro login (ou quando o perfil estiver incompleto), o usuário passa por um mini-onboarding de perfumaria (rápido, pulável) para informar gostos olfativos, contexto de uso e objetivos. Esses dados personalizam o chat: ajustam recomendações (famílias/notas), adequam projeção/fixação ao clima/ocasião, consideram orçamento e marcas, e modulam tom e nível de detalhe das respostas. Tudo pode ser editado depois em Configurações › Preferências.
+
+### 🎯 Funcionalidade 4: Recuperar senha
 **Como funciona:** Se o usuário esquecer a senha, informa o e-mail; o sistema envia um código de verificação para redefinição segura. O fluxo prevê expiração do código e reenvio controlado.
 
-### 🎯 Funcionalidade 4: Chat
+### 🎯 Funcionalidade 5: Chat
 **Como funciona:** Após autenticar, o usuário acessa a página principal do chat com área de input para enviar dúvidas e comandos ao agente. A interface exibe mensagens em tempo real/streaming, trata estados (carregando/erro) e mantém histórico.
 
-### 🎯 Funcionalidade 4: Chat
+### 🎯 Funcionalidade 6: Sidebar
 **Como funciona:** Sidebar à esquerda com histórico de conversas e busca. Na parte inferior, um mini card de perfil com nome do usuário e botão “Sair” para encerrar sessão e voltar à página inicial.
 
 
