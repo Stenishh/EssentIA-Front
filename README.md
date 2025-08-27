@@ -167,7 +167,7 @@ frontend/
 
 ## 📚 Referências e Recursos
 
-| Claude e Chat GPT, além de outras IAs e agentes de IA em geral.
+- Claude e Chat GPT, além de outras IAs e agentes de IA em geral.
 
 ---
 
