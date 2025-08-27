@@ -1,0 +1,318 @@
+/* CHAT NO CHAO (responsivo) */
+:root{
+  --ia-green: #1B4D3E;
+  --ia-green-2: #2C7A64;
+  --bg: #F4F8F6;
+  --muted: #6B7280;
+  /* size tokens */
+  --chat-max-width: 880px;
+  --chat-centered-max-width: 800px;
+  --bubble-padding-vertical: 1rem;
+  --bubble-padding-horizontal: 1.25rem;
+  --bubble-radius: 14px;
+  --input-padding-vertical: 1rem;
+  --input-padding-horizontal: 1.25rem;
+  --avatar-size: 44px;
+  --sidebar-width: 300px;
+  --hamburger-size: 56px;
+  --base-font-size: 16px;
+}
+
+/* Ensure full-page chat */
+.chat-fullpage {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  background: var(--bg);
+}
+
+/* Left sidebar (off-canvas) */
+.chat-sidebar {
+  width: var(--sidebar-width);
+  background: #fff;
+  border-right: 1px solid rgba(0,0,0,0.05);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 90;
+  transform: translateX(-100%);
+  transition: transform .25s ease, box-shadow .25s ease, z-index .25s ease;
+}
+.chat-sidebar.open {
+  transform: translateX(0);
+  z-index: 160;
+  box-shadow: 0 24px 60px rgba(0,0,0,.28);
+}
+
+.chat-sidebar .brand{ display:flex;align-items:center;gap:.75rem;padding:.25rem 0; }
+.chat-sidebar .brand img{ width:var(--avatar-size); height:var(--avatar-size); }
+.chat-sidebar .brand h1{ font-size:1.05rem; color:var(--ia-green); margin:0; font-weight:700; }
+
+.chat-main{
+  margin-left:0;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  position: relative;
+}
+
+/* Shift main only on telas largas */
+.chat-sidebar.open ~ .chat-main{ margin-left:260px; }
+
+/* Sidebar bits */
+.sidebar-controls{display:flex;flex-direction:column;gap:.5rem}
+.history-search{padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(0,0,0,0.06);outline:none}
+.history-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.375rem}
+.history-item{display:flex;align-items:center;gap:.75rem;padding:.5rem;border-radius:8px;color:#234;cursor:pointer}
+.history-item:hover{background:rgba(40,110,80,0.06)}
+.history-item.active{background:rgba(28,77,50,0.08);font-weight:600}
+.history-item img{width:var(--avatar-size);height:var(--avatar-size);border-radius:8px;object-fit:cover}
+.history-item .meta{display:flex;flex-direction:column}
+.history-item .meta .title{font-size:1.05rem;color:var(--ia-green-2)}
+.history-item .meta .subtitle{font-size:.9rem;color:var(--muted)}
+
+.sidebar-footer{margin-top:auto;padding-top:1rem;border-top:1px solid rgba(0,0,0,0.03)}
+.sidebar-footer .profile{display:flex;gap:.75rem;align-items:center}
+.sidebar-footer img{width:48px;height:48px;border-radius:8px}
+.sidebar-footer .meta .name{font-weight:700}
+.sidebar-footer .meta .link{font-size:.85rem;color:var(--ia-green);text-decoration:none}
+
+/* Área do chat */
+.chat-area {
+  flex: 1;
+  overflow: auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.chat-column {
+  width: 100%;
+  max-width: var(--chat-max-width);
+  min-height: calc(100vh - 180px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  padding-bottom: 80px;
+}
+.chat-column.empty { justify-content: center; align-items: center; }
+
+/* Mensagens */
+.message-row{display:flex;gap:1.25rem;align-items:flex-end; width: 100%;}
+.message-row.ai{align-items:flex-start}
+.message-bubble{max-width:75%;padding:var(--bubble-padding-vertical) var(--bubble-padding-horizontal);border-radius:var(--bubble-radius);background:#fff;color:#111;border:1px solid rgba(0,0,0,0.04);font-size:1rem}
+.message-bubble.ai{background:#E8F3F0;color:var(--ia-green);border:none;border-top-left-radius:6px}
+.message-bubble.user{background:var(--ia-green);color:#fff;border-bottom-right-radius:6px;margin-left:auto}
+.message-row.user { justify-content: flex-end; }
+.message-bubble.user { margin-left: auto; margin-right: 0; text-align: center; }
+.avatar{ width:var(--avatar-size); height:var(--avatar-size); border-radius:50%; object-fit:cover; }
+.avatar-container{ display:flex; align-items:flex-end; }
+
+/* === INPUT: pílula (sem base) === */
+.input-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(280px, 92vw, var(--chat-max-width));
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  z-index: 80;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.input-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: .5rem;
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 999px;
+  padding: .5rem .5rem;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+  pointer-events: auto;
+}
+.input-row input{
+  min-width: 0;
+  padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+  border-radius:999px;
+  border:none;
+  outline:none;
+  font-size: 1rem;
+  background: transparent;
+}
+.btn-ghost{background:transparent;border:none;color:var(--ia-green);padding:.5rem 1rem;border-radius:.5rem;cursor:pointer}
+.btn-primary {
+  background: var(--ia-green);
+  color: #fff;
+  padding: .6rem 1rem;
+  border-radius: 999px;
+  border: none;
+  cursor:pointer;
+}
+
+/* Na primeira tela, centraliza a pílula */
+.chat-fullpage.compose-center .input-bar,
+.chat-main.compose-center .input-bar {
+  position: fixed;
+  top: 50%;
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+  width: clamp(300px, 92vw, 720px);
+  z-index: 80;
+}
+.chat-fullpage.compose-center .input-row,
+.chat-main.compose-center .input-row { border-radius: 999px; }
+
+/* Esconde somente o corpo do chat na primeira tela (sidebar continua disponível) */
+.chat-fullpage.compose-center .chat-area,
+.chat-fullpage.compose-center .chat-column { display: none !important; }
+
+/* Transições suaves */
+.input-bar, .chat-main.compose-center .input-row { transition: all 250ms ease; }
+
+/* Botão hamburger */
+.hamburger-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: var(--hamburger-size);
+  height: var(--hamburger-size);
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  cursor: pointer;
+  z-index: 200; /* sempre clicável */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, transform 120ms;
+}
+.hamburger-btn:hover { background: #f8f8f8; }
+.hamburger-btn svg { color: var(--ia-green); }
+
+/* --- Floating chat (widget) --- */
+.chat-fullpage.chat-floating,
+.chat-main.chat-floating {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 360px;
+  height: 640px;
+  max-width: calc(100% - 48px);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+  background: var(--bg);
+  z-index: 120;
+  overflow: hidden;
+}
+.chat-fullpage.chat-floating .chat-main,
+.chat-main.chat-floating .chat-area,
+.chat-fullpage.chat-floating .chat-area { height: 100%; }
+.chat-fullpage.chat-floating .chat-column,
+.chat-main.chat-floating .chat-column {
+  min-height: calc(100% - 80px);
+  height: calc(100% - 80px);
+}
+.chat-fullpage.chat-floating .input-bar,
+.chat-main.chat-floating .input-bar{
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  transform: none;
+  z-index: 125;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* === HERO CENTRAL (boas-vindas) — responsivo === */
+.welcome-hero{
+  position: fixed;
+  left: 50%;
+  top: 34vh;                    /* posição relativa ao viewport, evita sobrepor a pílula */
+  transform: translateX(-50%);
+  display: none;                /* só no compose-center */
+  flex-direction: column;
+  align-items: center;
+  gap: .75rem;
+  text-align: center;
+  z-index: 70;                  /* abaixo da pílula (80) */
+  width: min(1000px, 92vw);     /* evita linhas muito longas */
+  padding: 0 .5rem;
+}
+.welcome-hero .hero-title{
+  font-size: clamp(1.15rem, 5.2vw, 2.2rem); /* diminui bem em telas pequenas, segura em telas grandes */
+  line-height: 1.15;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: .1px;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  text-wrap: balance;           /* navegadores modernos */
+}
+.welcome-hero .hero-subtitle{
+  font-size: clamp(.95rem, .5vw + .8rem, 1.1rem);
+  color: var(--muted);
+}
+
+/* Mostra o hero somente no estado de composição central */
+.chat-main.compose-center .welcome-hero,
+.chat-fullpage.compose-center .welcome-hero{ display: flex; }
+
+/* ====== BREAKPOINTS ====== */
+
+/* Tablets e telas médias */
+@media (max-width: 900px){
+  .chat-sidebar{ transform:translateX(-100%); position:fixed; z-index:90; }
+  .chat-sidebar.open{ transform:translateX(0); z-index:160; }
+  .chat-main{ margin-left:0; }
+  .welcome-hero{ top: 32vh; }
+}
+
+/* Smartphones */
+@media (max-width: 600px){
+  .welcome-hero{ top: 30vh; }
+  .input-row{ padding: .35rem .4rem; }
+  .input-row input{ padding:.8rem 1rem; font-size: .95rem; }
+  .btn-primary{ padding: .65rem .9rem; font-size:.95rem; }
+}
+
+/* Smartphones muito estreitos: quebra o botão para baixo para não espremê-lo */
+@media (max-width: 420px){
+  .welcome-hero{ top: 28vh; }
+  .chat-fullpage.compose-center .input-bar,
+  .chat-main.compose-center .input-bar{ width: clamp(280px, 94vw, 620px); }
+  .input-row{
+    grid-template-columns: 1fr;
+    row-gap: .5rem;
+    border-radius: 18px;
+    padding: .5rem;
+  }
+  .btn-primary{ width: 100%; border-radius: 12px; }
+}
+
+/* Telas com pouca altura (landscape mobile, notebooks pequenos) */
+@media (max-height: 700px){
+  .welcome-hero{ top: 26vh; }
+}
+@media (max-height: 560px){
+  .welcome-hero{ top: 22vh; }
+}
+
+/* Ajustes gerais */
+.welcome-hero.hidden{ display: none !important; }
