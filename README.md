@@ -1,6 +1,6 @@
 # EssentIA
 # 📖 Template de Documentação - Projeto Educacional
-**Área de Desenvolvimento: [FRONTEND]**
+**Área de Desenvolvimento: FRONTEND**
 
 ---
 
@@ -9,7 +9,7 @@
 | Campo | Informação |
 |-------|------------|
 | **📅 Data de Criação** | [27/08/2025] |   
-| **👥 Membros da Equipe** | [Antono Augusto/Fernando Puebla] |
+| **👥 Membros da Equipe** | Antono Augusto e Fernando Puebla |
 | **📄 Versão** | [v1.0] |
 
 ---
@@ -19,24 +19,24 @@
 ### 📝 Descrição do Papel
 > **O que esta área faz no projeto?**
 
-[Responsável por criar a interface visual que os usuários verão e interagirão para Front-end]
+O Front-end entrega a experiência do usuário: transforma requisitos em páginas e componentes interativos, integra-se às APIs para enviar dados, valida entradas e trata erros, orquestra navegação e estados (carregando/sucesso/erro), aplica o Design System (cores, tipografia, tokens) e garante responsividade, acessibilidade e performance.
 
 ### 🎪 Contexto no Projeto
-[ Desenvolvimento da interface do usuário, incluindo a página inicial (com login e informações sobre o agente), além da página principal, que contém o chat] 
+ Desenvolvimento da interface do usuário, incluindo a página inicial (com login e informações sobre o agente), além da página principal, que contém o chat]
 
 ---
 
 ## 🎯 Objetivos e Entregas
 
 ### 🎯 Objetivos Principais
-- [ ] [Objetivo 1 -  Criar interface de página inicial responsiva]
-- [ ] [Objetivo 2 -  Implementar sistema de autenticação seguro]
-- [ ] [Objetivo 3 -  Criação de uma interface principal para o chat]
+- [ ] Objetivo 1 -  Criar interface de página inicial responsiva
+- [ ] Objetivo 2 -  Implementar sistema de autenticação seguro
+- [ ] Objetivo 3 -  Criação de uma interface principal para o chat
 
 ### 📦 Principais Entregas
 | Entrega | Descrição | Prazo Estimado |
 |---------|-----------|----------------|
-| [Pagina inicial] | [Criação de uma página principal com informações sobre o agente e sistema de login integrado à página] | [06/09] |
+| Pagina inicial | [Criação de uma página principal com informações sobre o agente e sistema de login integrado à página] | 06/09 |
 | [Nome da Entrega 2] | [Descrição detalhada] | [DD/MM] |
 | [Nome da Entrega 3] | [Descrição detalhada] | [DD/MM] |
 
@@ -46,7 +46,6 @@
 
 ### 🔧 Estrutura Planejada
 ```
-[Descreva aqui a estrutura de pastas, componentes, módulos, etc.]
 Exemplo para Front-end:
 EssentIA/
 ├── assets
@@ -67,7 +66,7 @@ EssentIA/
 ```
 
 ### 🔄 Fluxo de Funcionamento
-1. **Passo 1:** [Desenvolver uma pagina principal e de chat que seja responsiva]
+1. **Passo 1:** Página inicial (Onboarding + Login): entregar a landing com autenticação (login/cadastro/recuperação) e overview do agente (como funciona, planos, limites e privacidade), conduzindo o usuário autenticado ao chat.
 2. **Passo 2:** [Descreva o segundo passo]
 3. **Passo 3:** [Continue descrevendo o fluxo completo]
 
@@ -81,9 +80,9 @@ EssentIA/
 ### 🛠️ Stack Tecnológico
 | Tecnologia | Versão | Justificativa |
 |------------|--------|---------------|
-| [HTML] | [HTML5] | [Por que escolheu esta tecnologia?] | Linguagem de dominio dos membros para montagem das paginas
-| [CSS] | [CSS#] | [Qual problema ela resolve?] | Customização de cores e formatos das paginas do projeto 
-| [JavaScript] | [ES6+] | [Como se adequa ao projeto?] |   Responsavel pelas açoes principais do projet na parte de FrontEnd
+| HTML | [TML5 | [Por que escolheu esta tecnologia?] | Linguagem de dominio dos membros para montagem das paginas
+| CSS | CSS3 | [Qual problema ela resolve?] | Customização de cores e formatos das paginas do projeto 
+| JavaScript | ES6+ | [Como se adequa ao projeto?] |   Responsavel pelas açoes principais do projet na parte de FrontEnd
 
 
 ---
@@ -107,15 +106,21 @@ EssentIA/
 
 ## ⚙️ Funcionalidades Detalhadas
 
-### 🎯 Funcionalidade 1: [Página inicial]
-**Como funciona:** [Uma página inicial com área de login para usuários já cadastrados, além de informações sobre os planos disponíveis, entre outros detalhes]
+### 🎯 Funcionalidade 1: Página inicial
+**Como funciona:** Página inicial com área de autenticação (login/CTA para cadastro) e apresentação do agente: o que faz, como funciona, planos, limites e políticas (Privacidade/Termos). Traz CTAs claros e direciona o usuário autenticado para o chat.
 
-### 🎯 Funcionalidade 2: [Login/cadastro]
-**Como funciona:** [Página de cadastro com verificação de e-mail para usuários que ainda não possuem conta na EssentIA.]
+### 🎯 Funcionalidade 2: Login/cadastro
+**Como funciona:** luxo completo de autenticação. Para novos usuários, cadastro com verificação de e-mail e um mini onboarding para captar preferências (gostos, objetivos) que personalizam a experiência no chat.
 
+### 🎯 Funcionalidade 3: Recuperar senha
+**Como funciona:** Se o usuário esquecer a senha, informa o e-mail; o sistema envia um código de verificação para redefinição segura. O fluxo prevê expiração do código e reenvio controlado.
 
-### 🎯 Funcionalidade 3: [Recuperar senha]
-**Como funciona:** [Caso o usuário não se lembre da senha cadastrada, um código de verificação será enviado para o e-mail informado.]
+### 🎯 Funcionalidade 4: Chat
+**Como funciona:** Após autenticar, o usuário acessa a página principal do chat com área de input para enviar dúvidas e comandos ao agente. A interface exibe mensagens em tempo real/streaming, trata estados (carregando/erro) e mantém histórico.
+
+### 🎯 Funcionalidade 4: Chat
+**Como funciona:** Sidebar à esquerda com histórico de conversas e busca. Na parte inferior, um mini card de perfil com nome do usuário e botão “Sair” para encerrar sessão e voltar à página inicial.
+
 
 
 ---
