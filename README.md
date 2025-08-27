@@ -1,5 +1,4 @@
 # EssentIA
-# 📖 Template de Documentação - Projeto Educacional
 **Área de Desenvolvimento: FRONTEND**
 
 ---
@@ -8,7 +7,7 @@
 
 | Campo | Informação |
 |-------|------------|
-| **📅 Data de Criação** | [27/08/2025] |   
+| **📅 Data de Criação** | 27/08/2025 |   
 | **👥 Membros da Equipe** | Antono Augusto e Fernando Puebla |
 | **📄 Versão** | [v1.0] |
 
@@ -36,7 +35,7 @@ O Front-end entrega a experiência do usuário: transforma requisitos em página
 ### 📦 Principais Entregas
 | Entrega | Descrição | Prazo Estimado |
 |---------|-----------|----------------|
-| Pagina inicial | [Criação de uma página principal com informações sobre o agente e sistema de login integrado à página] | 06/09 |
+| Pagina inicial | Criação de uma página principal com informações sobre o agente e sistema de login integrado à página] | 06/09 |
 | [Nome da Entrega 2] | [Descrição detalhada] | [DD/MM] |
 | [Nome da Entrega 3] | [Descrição detalhada] | [DD/MM] |
 
@@ -46,8 +45,7 @@ O Front-end entrega a experiência do usuário: transforma requisitos em página
 
 ### 🔧 Estrutura Planejada
 ```
-Exemplo para Front-end:
-EssentIA/
+frontend/
 ├── assets
 │   ├── css
 │   │   ├── chat.css
@@ -78,11 +76,11 @@ EssentIA/
 ## 💻 Tecnologias e Ferramentas
 
 ### 🛠️ Stack Tecnológico
-| Tecnologia | Versão | Justificativa |
-|------------|--------|---------------|
-| HTML | [TML5 | [Por que escolheu esta tecnologia?] | Linguagem de dominio dos membros para montagem das paginas
-| CSS | CSS3 | [Qual problema ela resolve?] | Customização de cores e formatos das paginas do projeto 
-| JavaScript | ES6+ | [Como se adequa ao projeto?] |   Responsavel pelas açoes principais do projet na parte de FrontEnd
+| Tecnologia | Versão |
+|------------|--------|
+| HTML | HTML5 |
+| CSS | CSS3 | 
+| JavaScript | ES6+ |
 
 
 ---
@@ -99,8 +97,8 @@ EssentIA/
 
 
 ### 📋 Dependências
-- **Depende de:** [contratos de API, tokens de desing]
-- **Fornece para:** [Usuarios finais, documentação de uso de componentes]
+- **Depende de:** contratos de API, tokens de desing
+- **Fornece para:** Usuarios finais, documentação de uso de componentes
 
 ---
 
@@ -127,12 +125,12 @@ EssentIA/
 
 
 ### ✅ Checklist de Qualidade
-- [ ] [Critério de qualidade 1]
-- [ ] [Critério de qualidade 2]
-- [ ] [Critério de qualidade 3]
-- [X] [Código comentado e documentado]
-- [ ] [Testes implementados]
-- [ ] [Performance otimizada]
+- [ ] Critério de qualidade 1
+- [ ] Critério de qualidade 2
+- [ ] Critério de qualidade 3
+- [X] Código comentado e documentado
+- [ ] Testes implementados
+- [ ] Performance otimizada
 
 ---
 
@@ -174,7 +172,7 @@ EssentIA/
 ---
 
 ### 🔧 Ferramentas e Recursos
-- [Live server]: [Extensão que simula um servidor local em tempo rea]
+- Live server: Extensão que simula um servidor local em tempo real
 
 ---
 
@@ -183,8 +181,8 @@ EssentIA/
 ### 👤 Responsabilidades da Equipe
 | Nome | Papel | Responsabilidades Principais |
 |------|-------|------------------------------|
-| [Antonio Augusto] | [Desenvolvedor] | [Responsável pela criação da página inicial e do sistema de login.] |
-| [Fernando Puebla ] | [Desenvolvedor] | [Responsável pela criação da página principal do chat] |
+| Antonio Augusto | Desenvolvedor | Responsável pela criação da página inicial e do sistema de login. |
+| Fernando Puebla  | Desenvolvedor | Responsável pela criação da página principal do chat |
 
 ---
 
@@ -192,9 +190,9 @@ EssentIA/
 
 | Data | Versão | Alteração | Responsável |
 |------|--------|-----------|-------------|
-| [24/08] | v1.0 | Criação inicial do documento | [Fernando Puebla] |
-| [27/08] | v1.1 | [Criação inicial da página inicial e login] | [Antonio Augusto] |
-| [27/08] | v1.1 | [Criação inicial da página principal do chat] | [Fernando Puebla] |
+| [24/08] | v1.0 | Criação inicial do documento | Fernando Puebla |
+| [27/08] | v1.1 | Criação inicial da página inicial e login | Antonio Augusto |
+| [27/08] | v1.1 | Criação inicial da página principal do chat | Fernando Puebla |
 
 ---
 
