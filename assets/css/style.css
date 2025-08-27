@@ -8,14 +8,13 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    /* COR ALTERADA: Gradiente escuro e sofisticado */
-    background: linear-gradient(120deg, #2c3e50 0%, #000000 100%);
+    /* COR ALTERADA: Gradiente claro com foco no verde */
+    background: linear-gradient(120deg, #d0f0c0 0%, #f0f0f0 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* COR ALTERADA: Cor de texto padrão para o corpo */
-    color: #f0f0f0;
+    color: #333; /* Cor do texto padrão mais escura para contraste */
     overflow-x: hidden;
 }
 
@@ -26,15 +25,15 @@ body {
 }
 
 .form-container {
-    /* COR ALTERADA: Fundo de "vidro escuro" */
-    background: rgba(10, 10, 10, 0.25);
-    backdrop-filter: blur(15px);
+    /* COR ALTERADA: Fundo branco translúcido */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 40px;
-    /* COR ALTERADA: Sombra mais sutil para o tema escuro */
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-    /* COR ALTERADA: Borda clara para contraste */
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* COR ALTERADA: Sombra mais suave */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    /* COR ALTERADA: Borda verde clara */
+    border: 1px solid rgba(87, 140, 68, 0.3);
     animation: fadeInSlideUp 0.8s ease-out forwards;
     opacity: 0;
     position: relative;
@@ -63,8 +62,8 @@ body {
 .form-toggle button {
     background: none;
     border: none;
-    /* COR ALTERADA: Cor do texto do botão de alternância */
-    color: #ffffff;
+    /* COR ALTERADA: Cor do texto do botão mais escura */
+    color: #555;
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
@@ -76,6 +75,7 @@ body {
 
 .form-toggle button.active {
     opacity: 1;
+    color: #578C44; /* Cor do botão ativo para maior destaque */
 }
 
 .form-toggle button.active::after {
@@ -85,42 +85,43 @@ body {
     left: 10px;
     right: 10px;
     height: 3px;
-    /* COR ALTERADA: Cor da linha do botão ativo */
-    background-color: #ffffff;
+    /* COR ALTERADA: Cor verde vibrante do logo na linha do botão ativo */
+    background-color: #578C44;
     border-radius: 3px;
 }
 
 .form {
     position: absolute;
-    top: 0;
+    top: 90px; /* Ajuste para dar espaço ao toggle */
     left: 0;
     right: 0;
+    padding: 0 40px;
     opacity: 0;
     visibility: hidden;
-    padding-top: 90px;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateX(50px);
 }
 
 .form.active {
     opacity: 1;
     visibility: visible;
-    position: static;
-    padding-top: 0;
+    position: relative; /* Mudança para position relative */
+    top: 0; /* Reset do top */
+    transform: translateX(0);
 }
 
 .form h2 {
     text-align: center;
     margin-bottom: 10px;
-    /* COR ALTERADA: Cor do título */
-    color: #ffffff;
+    /* COR ALTERADA: Cor do título mais escura */
+    color: #333;
     font-weight: 600;
 }
 
 .form p {
     text-align: center;
     margin-bottom: 30px;
-    /* COR ALTERADA: Cor do parágrafo */
-    color: #cccccc;
+    color: #777; /* Cor do parágrafo um pouco mais escura */
     font-size: 14px;
 }
 
@@ -134,10 +135,9 @@ body {
     padding: 10px 0;
     background: transparent;
     border: none;
-    /* COR ALTERADA: Cor da borda inferior do input */
-    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-    /* COR ALTERADA: Cor do texto do input */
-    color: #ffffff;
+    /* COR ALTERADA: Cor da borda inferior do input verde clara */
+    border-bottom: 2px solid rgba(87, 140, 68, 0.6);
+    color: #333; /* Cor do texto do input mais escura */
     font-size: 16px;
     outline: none;
     transition: border-color 0.3s ease;
@@ -153,50 +153,39 @@ body {
     margin: 0;
 }
 
-.input-group input[type=number] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
-
-.input-group input::-webkit-input-placeholder { color: transparent; }
-.input-group input::-moz-placeholder { color: transparent; }
-.input-group input:-ms-input-placeholder { color: transparent; }
-.input-group input::-ms-input-placeholder { color: transparent; }
-
 .input-group label {
     position: absolute;
     top: 10px;
     left: 0;
-    /* COR ALTERADA: Cor da label */
-    color: rgba(255, 255, 255, 0.7);
+    color: #888;
     font-size: 16px;
     pointer-events: none;
     transition: 0.3s ease;
 }
 
 .input-group input:focus {
-    /* COR ALTERADA: Cor da borda em foco */
-    border-bottom-color: #ffffff;
+    /* COR ALTERADA: Cor da borda em foco verde vibrante */
+    border-bottom-color: #578C44;
 }
 
 .input-group input:focus + label,
 .input-group input:not(:placeholder-shown) + label {
     top: -15px;
     font-size: 12px;
-    /* COR ALTERADA: Cor da label em foco */
-    color: #ffffff;
+    /* COR ALTERADA: Cor da label em foco verde vibrante */
+    color: #578C44;
     opacity: 1;
 }
 
 .btn {
     width: 100%;
     padding: 15px;
-    /* COR ALTERADA: Botão de alto contraste */
-    background: #ffffff;
+    /* COR ALTERADA: Botão com a cor verde vibrante do logo */
+    background: #578C44;
     border: none;
     border-radius: 10px;
-    /* COR ALTERADA: Cor do texto do botão */
-    color: #1a1a1a;
+    /* COR ALTERADA: Cor do texto do botão para branco (contraste) */
+    color: #ffffff;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
@@ -206,10 +195,10 @@ body {
 }
 
 .btn:hover:not(:disabled) {
-    /* COR ALTERADA: Cor do hover do botão */
-    background-color: #e0e0e0;
+    /* COR ALTERADA: Cor do hover do botão (verde mais claro) */
+    background-color: #68a95b;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .btn:active:not(:disabled) {
@@ -218,23 +207,24 @@ body {
 
 .btn:disabled {
     cursor: not-allowed;
+    background-color: #cccccc;
     opacity: 0.8;
 }
 
 .btn:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline: 2px solid #76B947;
     outline-offset: 3px;
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(87, 140, 68, 0.2);
 }
 
 input:focus-visible {
     outline: none;
-    border-bottom-color: #ffffff;
-    box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.3);
+    border-bottom-color: #76B947;
+    box-shadow: 0 2px 0 0 rgba(87, 140, 68, 0.3);
 }
 
 .form-toggle button:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline: 2px solid #76B947;
     outline-offset: 2px;
     border-radius: 8px;
 }
@@ -243,16 +233,17 @@ input:focus-visible {
     display: block;
     text-align: center;
     margin-top: 20px;
-    /* COR ALTERADA: Cor do link */
-    color: #ffffff;
+    /* COR ALTERADA: Cor do link verde um pouco mais escuro para legibilidade */
+    color: #4a783a;
     text-decoration: none;
     font-size: 14px;
-    opacity: 0.8;
+    opacity: 0.9;
     transition: opacity 0.3s ease;
 }
 
 .forgot-password:hover {
     opacity: 1;
+    text-decoration: underline;
 }
 
 .btn.loading {
@@ -273,8 +264,8 @@ input:focus-visible {
     left: 50%;
     transform: translate(-50%, -50%);
     border: 3px solid transparent;
-    /* COR ALTERADA: Cor do spinner para combinar com o texto do botão */
-    border-top-color: #1a1a1a;
+    /* COR ALTERADA: Cor do spinner para combinar com o texto do botão (branco) */
+    border-top-color: #ffffff;
     border-radius: 50%;
     animation: button-loading-spinner 1s linear infinite;
 }
@@ -282,43 +273,6 @@ input:focus-visible {
 @keyframes button-loading-spinner {
     from { transform: translate(-50%, -50%) rotate(0deg); }
     to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* Animações de transição permanecem as mesmas */
-.form-container.is-transitioning .form.active {
-    animation: slideInFromRight 0.5s ease-out forwards;
-}
-
-.form-container.is-transitioning.is-moving-left .form.active {
-    animation: slideInFromLeft 0.5s ease-out forwards;
-}
-
-.form.form-exit {
-    animation: slideOutToRight 0.5s ease-in forwards;
-}
-
-.form-container.is-moving-left .form.form-exit {
-    animation: slideOutToLeft 0.5s ease-in forwards;
-}
-
-@keyframes slideInFromRight {
-    from { opacity: 0; transform: translateX(50px); visibility: visible; }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInFromLeft {
-    from { opacity: 0; transform: translateX(-50px); visibility: visible; }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideOutToLeft {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(-50px); }
-}
-
-@keyframes slideOutToRight {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(50px); }
 }
 
 @media (max-width: 480px) {
@@ -345,4 +299,14 @@ input:focus-visible {
 
 .form-container.login-mode {
     min-height: 480px;
+}
+
+.ia-green {
+    color: #578C44;
+    font-weight: 700;
+}
+
+.voltar-login {
+    font-size: 20px;
+    font-weight: 600;
 }

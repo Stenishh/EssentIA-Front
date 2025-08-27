@@ -214,6 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Observa mudanças nos formulários
     observer.observe(loginForm, { attributes: true, attributeFilter: ['class'] });
     observer.observe(signupForm, { attributes: true, attributeFilter: ['class'] });
+
+
 });
 
 // NOVO: Utilitários exportáveis (caso você queira usar em outros arquivos)
@@ -239,3 +241,12 @@ window.LoginFormUtils = {
         });
     }
 };
+
+ // Impede números no campo de nome do cadastro
+const signupName = document.getElementById('signup-name');
+if (signupName) {
+    signupName.addEventListener('input', function () {
+        // Remove qualquer número digitado
+        this.value = this.value.replace(/[0-9]/g, '');
+    });
+}
